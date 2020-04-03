@@ -25,6 +25,8 @@ elif [ "$COMMAND" == "del-backup" ]; then
     delBackup $2
 elif [ "$COMMAND" == "del-restore" ]; then
     delRestore $2
+elif [ "$COMMAND" == "uninstall" ]; then
+    uninstall
 else
   printHelp
   exit 1

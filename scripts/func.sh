@@ -100,3 +100,10 @@ function delRestore {
     velero delete restore $1
     return 0
 }
+
+function uninstall {
+  kubectl delete namespace/velero clusterrolebinding/velero
+  kubectl delete crds -l component=velero
+
+  return 0
+}

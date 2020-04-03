@@ -11,7 +11,8 @@ function printHelp(){
   echo "  get-backups                      - Get backups"
   echo "  get-restores                     - Get restores"
   echo "  del-backup [backup_name]         - Delete a backup"
-  echo "  del-restore [restore_name]       - Delte a restore"
+  echo "  del-restore [restore_name]       - Delete a restore"
+  echo "  uninstall                        - Uninstall horcrux"
   echo ""
   echo "Use 'horcrux.sh [command] --help' for more information about a command."
 }
