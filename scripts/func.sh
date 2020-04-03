@@ -28,6 +28,7 @@ function installClient {
     && rm velero-v1.3.1-linux-amd64.tar.gz \
     && cd velero-v1.3.1-linux-amd64 \
     && sudo mv velero /usr/local/bin \
+    && rm -rf velero-v1.3.1-linux-amd64
 
     echo 'alias v=velero' >> ~/.zshrc
     echo 'complete -F __start_velero v' >> ~/.zshrc
