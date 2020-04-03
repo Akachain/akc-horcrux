@@ -1,6 +1,6 @@
-function checkVelero {
-    local VERSION=$(velero version | grep Version)
-    if [ "${VERSION}" != "" ]; then
+function checkClient {
+    local CHECK=$(velero version | grep Client:)
+    if [ "${CHECK}" != "" ]; then
         return 1
     else
         return 0
@@ -8,35 +8,62 @@ function checkVelero {
     return 0
 }
 
-function install {
-    checkVelero
-    local IS_INSTALLED=$?
-
-    if [ $IS_INSTALLED == 0 ]; then
-      wget https://github.com/vmware-tanzu/velero/releases/download/v1.3.1/velero-v1.3.1-linux-amd64.tar.gz \
-      && tar -xvf velero-v1.3.1-linux-amd64.tar.gz \
-      && rm velero-v1.3.1-linux-amd64.tar.gz \
-      && cd velero-v1.3.1-linux-amd64 \
-      && sudo mv velero /usr/local/bin \
-      && velero install \
-        --provider $PROVISIONER \
-        --plugins velero/velero-plugin-for-aws:v1.0.1 \
-        --bucket $BUCKET \
-        --backup-location-config region=$REGION \
-        --snapshot-location-config region=$REGION \
-        --secret-file ~/.aws/credentials
-
-      echo 'alias v=velero' >> ~/.zshrc
-      echo 'complete -F __start_velero v' >> ~/.zshrc
-      echo 'source <(velero completion zsh)' >> ~/.zshrc
-      source ~/.zshrc
-
-      install
+function checkServer {
+    local CHECK=$(velero version | grep Server:)
+    if [ "${CHECK}" != "" ]; then
+        return 1
     else
-        echo "Horcrux is installed."
+        return 0
     fi
-
     return 0
+}
+
+function installClient {
+  checkClient
+  local IS_INSTALLED=$?
+
+  if [ $IS_INSTALLED == 0 ]; then
+    wget https://github.com/vmware-tanzu/velero/releases/download/v1.3.1/velero-v1.3.1-linux-amd64.tar.gz \
+    && tar -xvf velero-v1.3.1-linux-amd64.tar.gz \
+    && rm velero-v1.3.1-linux-amd64.tar.gz \
+    && cd velero-v1.3.1-linux-amd64 \
+    && sudo mv velero /usr/local/bin \
+
+    echo 'alias v=velero' >> ~/.zshrc
+    echo 'complete -F __start_velero v' >> ~/.zshrc
+    echo 'source <(velero completion zsh)' >> ~/.zshrc
+    source ~/.zshrc
+  fi
+
+  return 0
+}
+
+function installServer {
+  checkServer
+  local IS_INSTALLED=$?
+
+  if [ $IS_INSTALLED == 0 ]; then
+    velero install \
+      --provider $PROVISIONER \
+      --plugins velero/velero-plugin-for-aws:v1.0.1 \
+      --bucket $BUCKET \
+      --backup-location-config region=$REGION \
+      --snapshot-location-config region=$REGION \
+      --secret-file ~/.aws/credentials
+
+    installServer
+  else
+      echo "Horcrux was installed."
+  fi
+
+  return 0
+}
+
+function install {
+  installClient
+  installServer
+
+  return 0
 }
 
 function backup {
