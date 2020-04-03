@@ -77,6 +77,11 @@ function startScheduleBackup {
     return 0
 }
 
+function stopScheduleBackup {
+    velero delete schedule $1
+    return 0
+}
+
 function restore {
     velero restore create --from-backup $1
     return 0
