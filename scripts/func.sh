@@ -30,6 +30,8 @@ function install {
       echo 'complete -F __start_velero v' >> ~/.zshrc
       echo 'source <(velero completion zsh)' >> ~/.zshrc
       source ~/.zshrc
+
+      install
     else
         echo "Horcrux is installed."
     fi
