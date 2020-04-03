@@ -15,6 +15,8 @@ elif [ "$COMMAND" == "backup" ]; then
     backup
 elif [ "$COMMAND" == "start-schedule-backup" ]; then
     startScheduleBackup
+elif [ "$COMMAND" == "stop-schedule-backup" ]; then
+    stopScheduleBackup $2
 elif [ "$COMMAND" == "restore" ]; then
     restore $2
 elif [ "$COMMAND" == "get-backups" ]; then
