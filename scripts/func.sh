@@ -68,7 +68,11 @@ function install {
 }
 
 function backup {
-    velero backup create $BACKUP_NAME --include-namespaces $BACKUP_NAMESPACE
+    if [ $BACKUP_NAMESPACE == "all" ]; then
+        velero backup create $BACKUP_NAME
+    else
+        velero backup create $BACKUP_NAME --include-namespaces $BACKUP_NAMESPACE
+    fi
     return 0
 }
 
