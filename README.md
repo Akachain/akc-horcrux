@@ -289,3 +289,7 @@ Using: horcrux stop-schedule-backup BACKUP_NAME
 ```
 $ horcrux stop-schedule-backup sonchain-backup
 ```
+
+<h2>V. LICENSE</h2>
+
+Akc-Horcrux project source code files are made available under MIT license, located in the LICENSE file. Basically, you can do whatever you want as long as you include the original copyright and license notice in any copy of the software/source.
