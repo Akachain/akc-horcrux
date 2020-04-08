@@ -225,11 +225,12 @@ $ horcrux get-restores
 ```
 
 Output:
-
+```
 NAME                              BACKUP             STATUS      WARNINGS   ERRORS   CREATED                         SELECTOR
 sonchain-backup2-20200403051836   sonchain-backup2   Completed   0          0        2020-04-03 05:18:37 +0000 UTC   <none>
 sonchain-backup3-20200403053751   sonchain-backup3   Completed   0          0        2020-04-03 05:37:52 +0000 UTC   <none>
 sonchain-backup5-20200403074443   sonchain-backup5   Completed   0          0        2020-04-03 07:44:44 +0000 UTC   <none>
+```
 
 _Delete_
 
