@@ -1,22 +1,34 @@
 
 
-<h1><span style="color: blue">akc-hocrux:</span> Disaster Recovery plan for akaChain</h1>
+<img src="./horcrux-icon-text.png" alt="drawing" height="120"/>
+<h1>Disaster Recovery Tool for Hyperledger Fabric on Kubernetes</h1>
 
 <h2>I. Introdution</h2>
 
-Disaster Recovery Plan is designed to backup and restore a network from potentially catastrophic.
+Akc-Horcrux is designed to backup and restore a Hyperledger Fabric network deployed on Kubernetes from potential catastrophic events. Like the dark lord, as long as there is a remaining horcrux, the network cannot die.
+To create a Hyperledger Fabric network using Kubernetes, we provide another tool call [AKC-Mamba](https://github.com/Akachain/akc-mamba).
 
-Backing up is the only way to protect network’s data. And it’s also useful for routine administrative purposes such as migrating cluster resources to other cluster, or replicating cluster to development and testing cluster
+When running a Fabric blockchain network, we often run things in high availability mode. We might run multiple peers node and services, then if a peer dies, the other continues to function properly. Later, because of the Hyperledger Fabric mechanism, the administrator can always remove the faulty peer and create a new one to re-sync data back from other peer nodes.
 
-<h2>II. What is need to backup?</h2>
+#### So why does a peer die ?
+Unfortunately, a peer is a piece of software in a very complex network of many components. In Hyperledger Fabric, we have a lot of problems of the Kafka-based ordering service. Sometimes, the peer or its state database data is corrupted due to disk faulty or malicious intention. Funny enough, we once had to deal with the case where the master administrator accidentally delete the whole production Kubernetes cluster for **cost-saving** purpose.
+After these kinds of event, the peer becomes faulty and just refuses to continue to accept blocks. 
 
-In a network, we need to backup two things:
+#### Great, we will create new peer and sync back data from the network.
+This process consumes **a lot** of time as our ledger can only grow over time. The peer cannot just simply download the ledger from other peer nodes. It must, in fact, verify every block in the ledger from the genesis block until the most recent one. 
+
+To put it simpy, the good old practice of backup is the best way to protect network data. It is also useful for routine administrative purposes such as migrating cluster resources to other cluster, or replicating clusters for development and testing.
+
+
+<h2>II. What do we need to backup?</h2>
+
+In a Hyperledger Fabric network on Kubernetes, or simply any Kubernetes based solution, we need to backup two things:
 - __Configuration, State and Metadata of the cluster:__ resources are defined with a Kubernetes CRD (Custom Resource Definition) stored in etcd.
 - __Persistent volumes:__ includes Crypto materials, Channel artifacts, Peer backup files, Orderer backup files to recreate the network.
 
-<h2>III. Hoxcrux tool</h2>
+Obviously, we can't do all of these tasks by ourselves. We rely on a VMWare tool called [velero](https://github.com/vmware-tanzu/velero/) to backup our Kubernetes cluster.
 
-__horcrux__ tool was develop by akaChain to backup and restore a network.
+<h2>III. Hoxcrux tool</h2>
 
 _Features:_
 <table>
