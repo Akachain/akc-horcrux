@@ -30,9 +30,13 @@ function installClient {
     && sudo mv velero /usr/local/bin \
     && rm -rf velero-v1.3.1-linux-amd64
 
+    local PATH=$(pwd)
+    echo "alias horcrux=$PATH/scripts/horcrux.sh" >> ~/.zshrc
+
     echo 'alias v=velero' >> ~/.zshrc
     echo 'complete -F __start_velero v' >> ~/.zshrc
     echo 'source <(velero completion zsh)' >> ~/.zshrc
+
     source ~/.zshrc
   fi
 
@@ -55,6 +59,7 @@ function installServer {
     installServer
   else
       echo "Horcrux was installed."
+      echo "Using: horcrux [command]"
   fi
 
   return 0
@@ -97,7 +102,7 @@ function getBackups {
 }
 
 function getRestores {
-    velero backup get
+    velero restore get
     return 0
 }
 
